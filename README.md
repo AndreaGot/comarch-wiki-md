@@ -1,2 +1,3 @@
-# comarch-wiki-md
-Comarch wiki made with Markdown
+# Comarch ERP Wiki
+
+Wiki for Comarch ERP made in Markdown
