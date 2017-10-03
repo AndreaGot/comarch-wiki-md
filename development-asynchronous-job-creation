@@ -1,0 +1,30 @@
+# Creazione job asincrono
+
+Può capitare che ci sia la necessità di creare un job asincrono. Con il seguente codice è possibile risolvere il problema
+
+      CisBatchService service = CisBatchService.getInstance();
+      CisBatchJob job = service.createJob(true);
+      job.setApplication("com.pan.app.general.sm.log.ExportUDC");
+      job.setSubmitterClassName(Picking.class.getName());
+      job.setNotificationMode(com.cisag.pgm.services.output.JobNotificationMode.SESSION);
+      job.setRelease(Boolean.TRUE);
+      job.setAction(0);
+
+      params = new CisParameterList();
+      StringBuilder sb = new StringBuilder();
+      for (String s : ulForSM) {
+        sb.append(s);
+        sb.append(", ");
+      }
+
+      params.setString(ExportMaintenance.EXP_FILTER, sb.substring(0, sb.length() - 2));
+      params.setShort(ExportMaintenance.EXP_EXPORT_MODE, ExportMode.COMPLETE);
+      params.setShort(ExportMaintenance.EXP_LOGGING_MODE, LoggingMode.SUMMARY);
+      params.setShort(ExportMaintenance.EXP_TABLES, TableExport.UNIT_LOADS);
+      params.setBoolean(ExportMaintenance.UL_CONTENT_CHECKED, true);
+      params.setBoolean(ExportMaintenance.UL_STATUS_CHECKED, true);
+
+      job.setParameters(params);
+      if (service != null) {
+        service.submitJob(job);
+      }
